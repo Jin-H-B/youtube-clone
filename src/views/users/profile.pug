@@ -1,0 +1,12 @@
+extends ../base.pug
+include ../mixins/video.pug
+
+block content
+    div.profile__data
+        img(src="/" + user.avatarUrl).avatar
+        h3=user.name
+    div.video-grid
+        each video in user.videos.reverse()
+            +video(video)
+        else
+            span.empty__message No Videos Found

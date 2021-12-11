@@ -1,0 +1,27 @@
+include mixins/message.pug
+
+doctype html
+html(lang="en")
+    head
+        title #{pageTitle} | Wetube
+        //- link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css")
+        //- server.js에서 /static 라우트로 설정
+        link(rel="stylesheet", href="/static/css/styles.css") 
+    body
+        if messages.error 
+            +message("error", messages.error)
+        if messages.success 
+            +message("success", messages.success)
+        if messages.info 
+            +message("info", messages.info)
+        include partials/header.pug
+        main
+            block content   
+        include partials/footer.pug
+    script(src="/static/js/main.js")
+    block scripts
+        
+        
+    //- script(src="/static/js/main.js")
+    //-main.js로 style가져오는 방법이지만 위 link로 가져왔기 때문에 삭제

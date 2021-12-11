@@ -1,0 +1,29 @@
+header
+    a(href="/").header__logo
+        i.fab.fa-youtube 
+    nav 
+        ul
+            li
+                a(href="/search")
+                    i.fas.fa-search 
+            //- pug는 locals의 값을 읽어올 수 있음
+            if loggedIn
+                li
+                    a(href="/videos/upload") Upload Video
+                li 
+                    a(href="/users/edit") Edit Profile
+                li 
+                    a(href="/users/logout") Log out
+                li 
+                    a(href=`/users/${loggedInUser._id}`)
+                        if loggedInUser.avatarUrl === ""
+                            span My Profile
+                        else
+                            img(src="/"+loggedInUser.avatarUrl).header__avatar
+
+            else
+                li 
+                    a(href="/login") Log in
+                li 
+                    a(href="/join").header__btn Join
+            

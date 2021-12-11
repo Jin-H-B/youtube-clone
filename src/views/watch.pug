@@ -1,0 +1,47 @@
+extends base.pug
+
+block content
+    div#videoContainer(data-id=video._id)
+        //-video(controls)하면 비디오 자체 조작버튼 생성
+        video(src="/"+video.fileUrl)
+        div#videoControls.videoControls
+            div.videoControls__play
+                span#play.videoControls__playBtn
+                    i.fas.fa-play
+                div.videoControls__time
+                    span#currentTime 00:00
+                    span  / 
+                    span#totalTime 00:00
+            input(type="range",step="1", value="0", min="0")#timeline.videoControls__timeline
+            div.videoControls__volume
+                input(type="range",step="0.1", value=0.5, min="0", max="1")#volume
+                span#mute
+                    i.fas.fa-volume-up
+            div
+                 span#fullScreen
+                    i.fas.fa-expand
+
+    if String(video.owner._id) === String(loggedInUser._id)
+            a(href=`${video.id}/edit`) Edit Video &rarr;
+    
+    if loggedIn
+        div.video__aad-comments
+            form.video__comment-form#commentForm
+                textarea(cols="30", rows="10", placeholder="Write a comment")
+                button Add Comment
+    div.video__comments
+        ul 
+            //-  pug는 js 코드도 실행 가능, reverse()해서 최신 댓글이 맨 위로 오도록
+            each comment in video.comments.reverse()
+                li.video__comment(data-id=comment.id)
+                    i.fas.fa-comment
+                    span  #{comment.text}
+                    if String(comment.owner._id)===String(loggedInUser._id)
+                        span.deleteBtn ❌
+                    
+
+block scripts
+    script(src="/static/js/videoPlayer.js")
+    //-이부분은 없어도 되지만 더 안전하게 하기 위해 
+    if loggedIn
+        script(src="/static/js/commentSection.js")
