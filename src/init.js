@@ -5,7 +5,7 @@ import Video from "./models/Video.js";
 import User from "./models/User.js";
 import app from "./server.js";
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000; //헤로쿠 없이 하면 4000;
 
 const handleListening = () =>
   console.log(`server listening on port http://localhost:${PORT}`);
