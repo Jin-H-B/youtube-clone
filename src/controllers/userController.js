@@ -136,19 +136,18 @@ export const finishGithubLogin = async (req, res) => {
     if (!user) {
       user = await User.create({
         avatarUrl: userData.avatar_url,
-        name: userData.name,
+        name: userData.name ? userData.name : "Undefined",
         userName: userData.login,
         email: emailObj.email,
         socialOnly: true,
         password: "", //socialOnly가 true이면 비번을 가질 필요가 없음
-        socialOnly: true,
-        location: userData.location,
+        location: userData.location ? userData.location : "Undefined",
       });
     }
 
     req.session.loggedIn = true;
     req.session.user = user;
-    return res.redirect("/login");
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
