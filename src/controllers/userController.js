@@ -260,7 +260,7 @@ export const seeUser = async (req, res) => {
     path: "videos",
     model: Video,
   });
-  console.log("user:", user);
+  // console.log("user:", user);
   if (!user) {
     return res.status(404).render("404.pug", { pageTitle: "User Not Found" });
   }
