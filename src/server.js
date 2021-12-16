@@ -48,9 +48,18 @@ app.use("/uploads", express.static("uploads")); //static으로 폴더 내 파일
 app.use("/static", express.static("assets")); //assets폴더에 접근
 app.use("/convert", express.static("node_modules/@ffmpeg/core/dist")); //, @ffmpeg/core/dist에 접근
 
+// app.use((req, res, next) => {
+//   res.header("Cross-Origin-Embedder-Policy", "require-corp");
+//   res.header("Cross-Origin-Opener-Policy", "same-origin");
+//   next();
+// });
+//위에 코드 쓰면 cors policy 에러나면서 파일 aws에서 안불러와짐..아래 코드로..
 app.use((req, res, next) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
