@@ -13,12 +13,14 @@ const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "clonetubeprac/images", //aws 버킷에 images 폴더
   acl: "public-read",
+  contentType: multerS3.AUTO_CONTENT_TYPE, //모바일에서도 작동
 });
 
 const s3VideoUploader = multerS3({
   s3: s3,
   bucket: "clonetubeprac/videos", //aws 버킷에 videos 폴더
   acl: "public-read",
+  contentType: multerS3.AUTO_CONTENT_TYPE,
 });
 
 const isHeroku = process.env.NODE_ENV === "production"; //heroku상에서 production으로 돼 있음.
