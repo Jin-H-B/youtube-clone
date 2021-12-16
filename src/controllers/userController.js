@@ -11,18 +11,18 @@ export const postJoin = async (req, res) => {
   // console.log("req.body:", req.body);
   const { name, userName, email, password, password2, location } = req.body;
   if (password !== password2) {
+    req.flash("error", "Password confirmation doesn't match");
     return res.status(400).render("join.pug", {
       pageTitle: "Join",
-      errorMessage: "Password confirmation doesn't match",
     });
   }
   const userExist = await User.exists({
     $or: [{ userName: userName }, { email: email }],
   });
   if (userExist) {
+    req.flash("error", "This username/email already taken.");
     return res.status(400).render("join.pug", {
       pageTitle: "Join",
-      errorMessage: "This username/email already taken.",
     });
   }
   try {
@@ -57,16 +57,16 @@ export const postLogin = async (req, res) => {
     socialOnly: false, //왜 이거 추가하면 에러메시지 뜨나...결론.db에 socialOnly 수정 전 저장이 안됨
   });
   if (!user) {
+    req.flash("error", "An account with this userName doesn't exist");
     return res.status(400).render("login.pug", {
       pageTitle: "Login",
-      errorMessage: "An account with this userName doesn't exist",
     });
   } // console.log(user.password);
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
+    req.flash("error", "Wrong password");
     return res.status(400).render("login.pug", {
       pageTitle: "Login",
-      errorMessage: "Wrong password",
     });
   }
 
@@ -183,9 +183,9 @@ export const postEditUser = async (req, res) => {
     ],
   });
   if (exist) {
+    req.flash("error", "This username/email already taken.");
     return res.status(400).render("edit-profile.pug", {
       pageTitle: "Edit Profile",
-      errorMessage: "This username/email already taken.",
     });
   }
 
@@ -228,18 +228,18 @@ export const postChangePassword = async (req, res) => {
   //구 비번 맞는지 확인
   const ok = await bcrypt.compare(oldPwd, password);
   if (!ok) {
+    req.flash("error", "The current passowrd incorrect");
     return res.status(400).render("users/change-password.pug", {
       pageTitle: "Change Password",
-      errorMessage: "The current passowrd incorrect",
     });
   }
 
   //새패스워드 확인
   if (newPwd !== newPwdConfirm) {
+    req.flahs("error", "New password does not match");
     //status(400)하면 웹페이지도 오류로 인식해 기억 팝업 X
     return res.status(400).render("users/change-password.pug", {
       pageTitle: "Change Password",
-      errorMessage: "New password does not match",
     });
   }
 
