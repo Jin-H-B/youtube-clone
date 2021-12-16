@@ -9,11 +9,19 @@ const s3 = new aws.S3({
   },
 });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "clonetubeprac",
+  bucket: "clonetubeprac/images", //aws 버킷에 images 폴더
   acl: "public-read",
 });
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "clonetubeprac/videos", //aws 버킷에 videos 폴더
+  acl: "public-read",
+});
+
+const isHeroku = process.env.NODE_ENV === "production"; //heroku상에서 production으로 돼 있음.
 
 export const localsMiddleware = (req, res, next) => {
   //   if (req.session.loggedIn) {
@@ -53,12 +61,12 @@ export const uploadAvatarMiddleware = multer({
   limits: {
     fileSize: 300000, //bytes
   },
-  storage: multerUploader, //AWS
+  storage: isHeroku ? s3ImageUploader : undefined, //AWS
 }); //user Router
 export const uploadVideoMiddleware = multer({
   dest: "uploads/videos/",
   limits: {
     fileSize: 3000000,
   },
-  storage: multerUploader, //AWS
+  storage: isHeroku ? s3VideoUploader : undefined, //AWS
 });

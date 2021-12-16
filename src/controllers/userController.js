@@ -189,10 +189,12 @@ export const postEditUser = async (req, res) => {
     });
   }
 
+  const isHeroku = process.env.NODE_ENV === "production";
+
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.location : avatarUrl, //file이 있으면? file.path. 없으면 avatarUrl그대로..aws 사용 시 location
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl, //file이 있으면? file.path. 없으면 avatarUrl그대로..aws 사용 시 location
       name: name,
       email: email,
       userName: userName,

@@ -112,14 +112,15 @@ export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
   // console.log(title, description, hashtags);
   // console.log("_id::", _id);
+  const isHeroku = process.env.NODE_ENV === "production";
   try {
     //await Video.create()로도 가능..video선언 필요 없고 .save()없어도 됨
     const newVideo = await Video.create({
       title: title,
       description: description,
       createdAt: Date.now(),
-      fileUrl: video[0].location, //aws 사용시 path에서 location으로 명칭 바뀜
-      thumbUrl: thumb[0].location,
+      fileUrl: isHeroku ? video[0].location : video[0].path, //aws 사용시 path에서 location으로 명칭 바뀜
+      thumbUrl: isHeroku ? thumb[0].location : thumb[0].path,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
       meta: {},
