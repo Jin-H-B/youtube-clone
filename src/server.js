@@ -49,11 +49,12 @@ app.use("/static", express.static("assets")); //assets폴더에 접근
 app.use("/convert", express.static("node_modules/@ffmpeg/core/dist")); //, @ffmpeg/core/dist에 접근
 
 app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); //한번 추가..
   res.header("Cross-Origin-Embedder-Policy", "require-corp");
   res.header("Cross-Origin-Opener-Policy", "same-origin");
   next();
 });
-// 위에 코드 쓰면 cors policy 에러나면서 파일 aws에서 안불러와져서..아래 코드로했는데 ffmpeg오류나서 다시 위코드로..대신 img, video에 crossoring 추가하고 aws에 cors설정
+// 위에 코드 쓰면 cors policy 에러나면서 파일 aws에서 안불러와져서..아래 코드로했는데 ffmpeg오류나서 다시 위코드로..대신 img, video에 crossoring 추가하고 aws에 cors설정..했는데 또 안됨..
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   res.header(
